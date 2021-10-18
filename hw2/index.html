@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Photo Album</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="styles.css"
+    />
+  </head>
+  <body>
+    <script src="main.js"></script>
+    <header>
+      <h1 class="title">Photo Album</h1>
+    </header>
+    <div class="row">
+      <div class="album-selection">
+        <h4>Album Collection</h4>
+        <div class="album-container">
+          <div id = "sad-album" class="album-wrapper">
+            <img class="clickable-album clickable-album-selected" onclick="onClickAlbum('sad-album')" src="https://cdn.pixabay.com/photo/2014/09/16/01/19/girl-447701_960_720.jpg">
+          </div>
+          <p>sad</p>
+          <div id = "happy-album" class="album-wrapper">
+            <img class="clickable-album" onclick="onClickAlbum('happy-album')" src="https://cdn.pixabay.com/photo/2014/12/16/22/25/sunset-570881_960_720.jpg">
+          </div>
+          <p>happy</p>
+          <div id = "mad-album" class="album-wrapper">
+            <img class="clickable-album" onclick="onClickAlbum('mad-album')" src="https://cdn.pixabay.com/photo/2017/02/01/12/12/angry-2030006_960_720.png">
+          </div>
+          <p>mad</p>
+          <div id = "empty-album" class="album-wrapper">
+            <img class="clickable-album" onclick="onClickAlbum('empty-album')" src="./TrollFace.png">
+          </div>
+          <p>empty</p>
+          
+        </div>
+      </div>
+      <div class="main">
+        <div class="main-image-container">
+          <img src="https://cdn.pixabay.com/photo/2014/09/16/01/19/girl-447701_960_720.jpg" height="100%" width="auto">
+        </div>
+        <div class="preview-container">
+          <div class="preview-image-wrapper">
+            <img class="clickable-img clickable-img-selected" id = "img-0" onclick = "onClickPreview('img-0')" src="https://cdn.pixabay.com/photo/2014/09/16/01/19/girl-447701_960_720.jpg">
+          </div>
+          <div class="preview-image-wrapper">
+            <img class="clickable-img" id = "img-1" onclick = "onClickPreview('img-1')" src="https://cdn.pixabay.com/photo/2018/05/22/14/00/girl-3421489_960_720.jpg">
+          </div>
+          <div class="preview-image-wrapper">
+            <img class="clickable-img" id = "img-2" onclick = "onClickPreview('img-2')" src="https://cdn.pixabay.com/photo/2017/08/10/03/47/guy-2617866_960_720.jpg">
+          </div>
+          <div class="preview-image-wrapper">
+            <img class="clickable-img" id = "img-3" onclick = "onClickPreview('img-3')" src="https://cdn.pixabay.com/photo/2017/08/21/19/00/woman-2666433_960_720.jpg">
+          </div>
+          <div class="preview-image-wrapper">
+            <img class="clickable-img" id = "img-4" onclick = "onClickPreview('img-4')" src="https://cdn.pixabay.com/photo/2017/01/06/19/49/woman-1958723_960_720.jpg">
+          </div>
+          <div class="preview-image-wrapper">
+            <img class="clickable-img" id = "img-5" onclick = "onClickPreview('img-5')" src="https://cdn.pixabay.com/photo/2014/08/08/20/55/worried-girl-413690_960_720.jpg">
+          </div>
+          <div class="preview-image-wrapper">
+            <img class="clickable-img" id = "img-6" onclick = "onClickPreview('img-6')" src="https://cdn.pixabay.com/photo/2016/02/19/11/53/pug-1210025_960_720.jpg">
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+
+  </body>
+</html>
+
