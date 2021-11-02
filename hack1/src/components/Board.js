@@ -57,24 +57,13 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
         {/* Useful Hint: A cell is going to be flagged. 'x' and 'y' are the xy-coordinate of the cell. */}
         {/* Reminder: If the cell is already flagged, you should unflagged it. Also remember to update the board and the remainFlagNum. */}
         {/* Reminder: The cell can be flagged only when it is not revealed. */}
-        const newState = {
-            value: 0,                   // To store the number of mines around the cell.
-            revealed: false,            // To store if the cell is revealed.
-            x: x,                       // To store the x coordinate (the column index) of the cell.
-            y: y,                       // To store the y coordinate (the row index) of the cell.
-            flagged: false,             // To store if the cell is flagged.
-        }
-        newState.value = board[x][y].value
-        newState.revealed = board[x][y].revealed
-        newState.x = board[x][y].x
-        newState.y = board[x][y].y
-        newState.flagged = !board[x][y].flagged
+        const newArray = JSON.parse(JSON.stringify(board))
+        newArray[x][y].flagged = !newArray[x][y].flagged
         if(board[x][y].flagged === true)
             setRemainFlagNum(remainFlagNum => remainFlagNum - 1)
         else
             setRemainFlagNum(remainFlagNum => remainFlagNum + 1)
-        setBoard(board => {board[x][y] = newState
-                            return board})
+        setBoard(newArray)
         
         
         
@@ -85,16 +74,32 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
         {/* Reveal the cell */}
         {/* Useful Hint: The function in reveal.js may be useful. You should consider if the cell you want to reveal is a location of mines or not. */}
         {/* Reminder: Also remember to handle the condition that after you reveal this cell then you win the game. */}
-        if(board[x][y].revealed === true){
+        
+        if(board[x][y].revealed === true || board[x][y].flagged === true){
             return;
         }
-        
+        if(win || gameOver)
+            return;
+        console.log("click")
         if(board[x][y].value === '💣'){
             setGameOver(gameOver => true)
+        }
+        else{
+            const newArray = JSON.parse(JSON.stringify(board))
+            newArray[x][y].revealed = true;
+            
+            setBoard(newArray)
+            setNonMineCount(nonMineCount => nonMineCount)
+
+        }
+        if(nonMineCount === 0){
+            setWin(true)
         }
         
         
     };
+
+    
 
     return(
         <div className = 'boardPage' >
