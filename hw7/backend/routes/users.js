@@ -20,10 +20,10 @@ router.post('/create-card', async(req, res) => {
         let ret = await saveUser(name, subject, score)
         if(ret === "exist"){
             
-            res.json({message: `Updating (${name}, ${subject}, ${score})`})
+            res.json({message: `Updating (${name}, ${subject}, ${score})`, card: true})
         }
         else{
-            res.json({message: `Adding (${name}, ${subject}, ${score})`})
+            res.json({message: `Adding (${name}, ${subject}, ${score})`, card: true})
         }
     }
     catch(e){
