@@ -8,7 +8,7 @@ import { Delete as DeleteIcon } from '@material-ui/icons'
 
 function Post(props) {
   const { pid } = useParams()
-  const [data, setData] = useState(null)
+  const [data, setData] = useState([])
 
   // TODO 3-(2): complete getPostDetail function to get the full information of a post from database
   const getPostDetail = async() => {
