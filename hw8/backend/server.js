@@ -13,6 +13,13 @@ const app = express()
 const server = http.createServer(app)
 const wss = new WebSocket.Server({server})
 
+const broadcastMessage = (data, status) => {
+    wss.clients.forEach((client) => {
+        sendData(data, client)
+        sendStatus(status, client)
+    })
+}
+
 db.once('open', ()=> {
     console.log('MongoDB connected!')
     wss.on('connection', (ws) => {
@@ -29,17 +36,16 @@ db.once('open', ()=> {
                     } catch (e){
                         throw new Error("Message DB save error: " + e)
                     }
-                    sendData(['output', [payload]], ws)
-                    sendStatus({
+                    
+                    broadcastMessage(['output', [payload]], {
                         type: 'success',
                         msg: 'Message sent.'
-                    }, ws)
+                    })
                     break
                 }
                 case 'clear':{
                     Message.deleteMany({}, ()=> {
-                        sendData(['cleared'], ws)
-                        sendStatus({type: 'info', msg: 'Message cache cleared.'}, ws)
+                        broadcastMessage(['cleared'],{type: 'info', msg: 'Message cache cleared.'})
                     })
                     break
                 }
