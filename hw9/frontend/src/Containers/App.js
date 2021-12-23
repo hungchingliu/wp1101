@@ -1,10 +1,9 @@
 import styled from 'styled-components'
-import {message} from 'antd'
+import {message, Tabs} from 'antd'
 import useChat from '../Hooks/useChat'
 import { useEffect, useState} from 'react'
 import ChatRoom from './ChatRoom'
 import SignIn from './SignIn'
-
 
 const StyledApp = styled.div`
 display: flex;
@@ -17,12 +16,15 @@ margin: auto;
 `;
 
 const LOCALSTORAGE_KEY = "save-me"
+const { TabPane } = Tabs
+
+
 function App() {
   const savedMe = localStorage.getItem(LOCALSTORAGE_KEY)
-  const { status, messages, signedIn, sendMessage, clearMessages, sendSignIn, sendSignUp} = useChat()
-  const [me, setMe] = useState(savedMe || "")
-  const [password, setPassword] = useState()
+  const { status, messages, sendMessage, clearMessages } = useChat()
+  const [me, setMe] = useState(savedMe || '')
   const [body, setBody] = useState('') 
+  const [signIn, setSignedIn] = useState(false)
   
   const displayStatus = (payload) => {
     if (payload.msg){
@@ -46,54 +48,15 @@ function App() {
   }
   useEffect( () => {displayStatus(status)}, [status])
   useEffect( () => {
-    if (signedIn) {
+    if (signIn) {
       localStorage.setItem(LOCALSTORAGE_KEY, me)
     }
-  }, [signedIn, me])
+  }, [signIn, me])
   
-  const signIn = (me, password) => {
-    if (!me){
-        displayStatus({
-            type: "error",
-            msg: "Missing user name"
-        })
-        return
-    }
-
-    if(!password){
-      displayStatus({
-        type: "error",
-        msg: "Missing password"
-      })
-      return
-    }
-
-    sendSignIn(me, password)
-  }
-
-  const signUp = (me, password) => {
-    if (!me){
-      displayStatus({
-          type: "error",
-          msg: "Missing user name"
-      })
-      return
-    }
-
-    if(!password){
-      displayStatus({
-        type: "error",
-        msg: "Missing password"
-      })
-      return
-    }
-
-    sendSignUp(me, password)
-}
     
   return (
     <StyledApp>
-      {signedIn?
+      {signIn?
         <ChatRoom 
           me={me} 
           messages={messages}
@@ -105,10 +68,7 @@ function App() {
         :<SignIn
           me={me}
           setMe={setMe}
-          password={password}
-          setPassword={setPassword}
-          signIn={signIn}
-          signUp={signUp} 
+          setSignedIn={setSignedIn} 
           dislayStatus={displayStatus}/>}
     </StyledApp>
   )

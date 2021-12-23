@@ -1,12 +1,65 @@
 import Message from './Message'
 import Title from './Title'
-import { Button, Input, Tag } from 'antd'
+import { Button, Input, Tabs, Tag } from 'antd'
+import { useState } from 'react'
+
+const { Tabpane } = Tabs
+const { TabPane } = Tabs
 
 
-
+const initialTabState = {
+  activeKey: null,
+  panes: [],
+}
 
 const ChatRoom = ({me, messages, body, setBody, displayStatus, sendMessage, clearMessages}) => {
   
+  const [activeKey, setActiveKey] = useState()
+  const [panes, setPanes] = useState([])
+  const [newTabIndex, setNewTabeIndex] = useState(0)
+  
+  const onChange = activeKey => {
+    setActiveKey(activeKey)
+  };
+
+  const onEdit = (targetKey, action) => {
+    if(action === 'add'){
+      add()
+    }
+    else if(action === 'remove'){
+      remove(targetKey)
+    }
+  };
+
+  const add = () => {
+    setNewTabeIndex(newTabIndex + 1)
+    const activeKey = `newTab${newTabIndex}`;
+    const newPanes = [...panes];
+    newPanes.push({ title: 'New Tab', content: 'Content of new Tab', key: activeKey });
+    setPanes(newPanes)
+    setActiveKey(activeKey)
+  };
+
+  const remove = targetKey => {
+    
+    let newActiveKey = activeKey;
+    let lastIndex;
+    panes.forEach((pane, i) => {
+      if (pane.key === targetKey) {
+        lastIndex = i - 1;
+      }
+    });
+    const newPanes = panes.filter(pane => pane.key !== targetKey);
+    if (newPanes.length && newActiveKey === targetKey) {
+      if (lastIndex >= 0) {
+        newActiveKey = newPanes[lastIndex].key;
+      } else {
+        newActiveKey = newPanes[0].key;
+      }
+    }
+    setPanes(newPanes)
+    setActiveKey(newActiveKey)
+  };
 
   return (
     <>
@@ -17,17 +70,18 @@ const ChatRoom = ({me, messages, body, setBody, displayStatus, sendMessage, clea
         </Button>
       </Title>
       <Message>
-        {messages.length === 0 ? (
-        <p style={{ color: '#ccc' }}>
-          No messages...
-        </p> ) : (
-          messages.map(({name, body}, i) => (
-            <p className="App-message" key={i}>
-              <Tag color = "blue">{name}</Tag>{body}
-            </p>
-          ))
-        )
-        }
+        <Tabs
+          type="editable-card"
+          onChange={onChange}
+          activeKey={activeKey}
+          onEdit={onEdit}
+        >
+          {panes.map(pane => (
+            <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
+              {pane.content}
+            </TabPane>
+          ))}
+        </Tabs>
       </Message>
       <Input.Search
         value={body}
@@ -38,7 +92,7 @@ const ChatRoom = ({me, messages, body, setBody, displayStatus, sendMessage, clea
           if(!msg){
             displayStatus({
               type: 'error',
-              msg: 'Please enter a message body.'
+              msg: 'Please enter a username and a message body.'
             })
             return
           }
@@ -50,3 +104,11 @@ const ChatRoom = ({me, messages, body, setBody, displayStatus, sendMessage, clea
   )}
 
 export default ChatRoom
+
+/*
+messages.map(({name, body}, i) => (
+            <p className="App-message" key={i}>
+              <Tag color = "blue">{name}</Tag>{body}
+            </p>
+          )
+*/

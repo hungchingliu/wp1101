@@ -3,9 +3,7 @@ import express from 'express'
 import dotenv from 'dotenv-defaults'
 import mongoose from 'mongoose'
 import WebSocket from 'ws'
-import ChatRoom from '../frontend/src/Containers/ChatRoom'
-import User from './models/user'
-import bcrypt from 'bcryptjs'
+import Message from './models/message'
 import {sendData, sendStatus, initData} from './wssConnect'
 dotenv.config()
 
@@ -24,9 +22,8 @@ const broadcastMessage = (data, status) => {
 
 db.once('open', ()=> {
     console.log('MongoDB connected!')
-    User.deleteMany({}).exec()
     wss.on('connection', (ws) => {
-
+        initData(ws)
         ws.onmessage = async (byteString) => {
             const { data } = byteString
             const [task, payload] = JSON.parse(data)
@@ -44,42 +41,6 @@ db.once('open', ()=> {
                         type: 'success',
                         msg: 'Message sent.'
                     })
-                    break
-                }
-                case 'signIn':{
-                    const {username, hash} = payload
-                    const user = await User.findOne({username:username}).exec()
-                    if(user){
-                        if(bcrypt.compareSync(hash, user.hash)){
-                            sendStatus({type: 'success', msg: `user ${username} sign in success!`}, ws)
-                            sendData(['signIn', ""], ws)
-                        }
-                        else{
-                            sendStatus({type: 'error', msg: `user ${username}'s password is incorrect!'`}, ws)
-                        }
-                    }
-                    else{
-                        sendStatus({type: 'error', msg: `user ${username} doesn't exist!`}, ws)
-                    }
-                    break
-                }
-                case 'signUp':{
-                    const {username, hash} = payload
-                    const user = await User.findOne({username:username}).exec()
-                    if(user){
-                        sendStatus({type: 'error', msg: `user ${username} has already existed!`}, ws)
-                    }
-                    else{
-                        const encryptedHash = bcrypt.hashSync(hash, 10)
-                        const newUser = new User({username, hash: encryptedHash})
-                        console.log([username, hash])
-                        await newUser.save()
-                        sendStatus({type: 'success', msg: `${username} sign up success!`}, ws)
-                    }
-                    break
-                }
-                case 'createChatRoom':{
-                    const {}
                     break
                 }
                 case 'clear':{

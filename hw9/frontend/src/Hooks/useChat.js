@@ -1,13 +1,9 @@
 import {useState } from "react";
-import { createHash } from "crypto";
 const client = new WebSocket('ws://localhost:4000')
-const encrypt = (password) => {
-    return createHash('sha256').update(password).digest('hex')
-}
 const useChat = () => {
     const [messages, setMessages] = useState([])
     const [status, setStatus] = useState({})
-    const [signedIn, setSignedIn] = useState(false)
+    
     
     const sendData = async (data) => {
         await client.send(JSON.stringify(data))
@@ -18,17 +14,6 @@ const useChat = () => {
 
     const clearMessages = () => {
         sendData(["clear"])
-    }
-
-    const sendSignIn = (name, password) => {
-        const hash = encrypt(password)
-        sendData(["signIn", {username: name, hash: hash}])
-    }
-
-    const sendSignUp = (name, password) => {
-        const hash = encrypt(password)
-        console.log(hash)
-        sendData(["signUp", {username: name, hash: hash}])
     }
 
     client.onmessage = (byteString) => {
@@ -47,9 +32,6 @@ const useChat = () => {
                 setMessages( () => payload)
                 break;
             }
-            case "signIn":{
-                setSignedIn(true);
-            }
             case "cleared":{
                 setMessages([])
                 break;
@@ -61,11 +43,8 @@ const useChat = () => {
     return {
         status, 
         messages,
-        signedIn,
         sendMessage,
-        clearMessages,
-        sendSignIn,
-        sendSignUp
+        clearMessages
     }
 }
 
