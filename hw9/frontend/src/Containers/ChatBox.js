@@ -1,50 +1,53 @@
 import { useEffect } from 'react'
-import { Tag, Tabs } from 'antd'
-import { useQuery } from '@apollo/client'
+import { Tag } from 'antd'
+import { useQuery, useSubscription } from '@apollo/client'
 import { CHATBOX_QUERY, CHATBOXMESSAGES_SUBSCRIPTION } from '../graphql'
-const { TabPane } = Tabs
+import { useState } from 'react'
 
-const ChatBox = ({pane, setPane, me, chatBoxName}) => {
+const ChatBox = ({me, chatBoxName}) => {
     
-    const { loading, error, data, subscribeToMore} = useQuery(CHATBOX_QUERY, {variables: {chatBoxName: chatBoxName}})
+    const { loading, data} = useQuery(CHATBOX_QUERY, {variables: {chatBoxName: chatBoxName}})
+    useSubscription(
+        CHATBOXMESSAGES_SUBSCRIPTION,
+        {
+            variables:{chatBoxName:chatBoxName},
+            onSubscriptionData: ({subscriptionData:{data}}) => {
+                if(data.chatBoxMessages.mutation === 'CREATED'){
+                    const newMessage = data.chatBoxMessages.message
+                    setMessages(prev => [...prev, newMessage])
+                }
+                else if(data.chatBoxMessages.mutation === 'CLEARED'){
+                    setMessages([])
+                }
+            }
+        }
+    )
+    const [messages, setMessages] = useState([])
+    const [unseenMessages, setUnseenMessages] = useState([])
+
     
     useEffect( () => {
-        try {
-            subscribeToMore({
-                document: CHATBOXMESSAGES_SUBSCRIPTION,
-                variables: {chatBoxName: chatBoxName},
-                updateQuery: (prev, { subscriptionData }) => {
-                    console.log(prev)
-                    if(!subscriptionData) return prev
-                    const newMessage = subscriptionData.data.chatBoxMessages.message
-                    console.log(subscriptionData)
-                    return {
-                        ...prev, 
-                        chatBox:
-                        {...prev.chatBox, messages: [...prev.chatBox.messages, newMessage]}
-                    }
-                }
-            })
-        } catch (e){} }, [subscribeToMore])
+        if(!loading){
+            setMessages(data.chatBox.messages)
+        }
+    }, [loading])
 
     return (
         <>
-        {loading?<></>:
-            data.chatBox.messages.map(({sender, body}, i) => { 
-                if(sender.name === me){
-                    return (
-                    <p className="App-message" key={i}>
-                            {body + " "}<Tag color = "blue">{sender.name}</Tag>
-                            </p>
-                    )
-                } else {
-                    return (<p className="App-message" key={i}>
-                            <Tag color = "blue">{sender.name}</Tag>{body}
-                            </p>)
-            }})
-        }
-        
+        {messages?messages.map(({sender, body}, i) => { 
+            if(sender.name === me){
+                return (
+                <p className="App-message" key={i}>
+                        {body + " "}<Tag color = "blue">{sender.name}</Tag>
+                        </p>
+                )
+            } else {
+                return (<p className="App-message" key={i}>
+                        <Tag color = "blue">{sender.name}</Tag>{body}
+                        </p>)
+        }}):<></>}
         </>
+       
     )
 }
 

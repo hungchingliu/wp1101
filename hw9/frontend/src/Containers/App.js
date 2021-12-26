@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import {message} from 'antd'
 import useChatRoom from '../Hooks/useChatRoom'
-import { useEffect, useState, useCallback} from 'react'
+import { useEffect, useState } from 'react'
 import ChatRoom from './ChatRoom'
 import SignIn from './SignIn'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import { CREATE_CHATBOX_MUTATION, CREATE_MESSAGE_MUTATION} from '../graphql/index'
+import { useMutation } from '@apollo/react-hooks'
+import { CREATE_CHATBOX_MUTATION, CREATE_MESSAGE_MUTATION, CLEAR_MESSAGE_MUTATION} from '../graphql/index'
 
 const StyledApp = styled.div`
 display: flex;
@@ -33,7 +33,7 @@ function App() {
   const [showModal, setShowModal] = useState(false)
   const [createChatBox] = useMutation(CREATE_CHATBOX_MUTATION)
   const [createMessage] = useMutation(CREATE_MESSAGE_MUTATION)
-  
+  const [clearMessage] = useMutation(CLEAR_MESSAGE_MUTATION)
   const displayStatus = (payload) => {
     if (payload.msg){
       const {type ,msg} = payload
@@ -73,12 +73,12 @@ function App() {
     setShowModal(false)
     setNewChatUser('')
     
-    const {error, data:{createChatBox:{messages, name}}} = data
+    const {error, data:{createChatBox:{name}}} = data
     if(!error){
       const activeKey = name;
       const newPanes = [...panes];
-      console.log(messages)
-      newPanes.push({ title: newChatUser, content: messages, key: activeKey });
+
+      newPanes.push({ title: newChatUser, key: activeKey });
       setStatus({type: "success", msg: "ChatBox created"})
       setPanes(newPanes)
       setActiveKey(activeKey)
@@ -112,6 +112,28 @@ function App() {
       console.log(error)
     }
   }
+
+  const clearMessages = async () => {
+    if(!activeKey){
+      setStatus({type: "error", msg: "No ChatBox selected"})
+      return;
+    } 
+    
+    const data = await clearMessage({
+      variables:{
+        chatBoxName: activeKey,
+      }
+    })
+    const {error} = data
+    if(!error){
+      setStatus({type: "success", msg: "Message clear"})
+    }
+    else {
+      setStatus({type: "error", msg: "Fail to clear message"})
+      console.log(error)
+    }
+
+  }
     
   return (
     <StyledApp>
@@ -130,6 +152,7 @@ function App() {
           setShowModal={setShowModal}
           displayStatus={displayStatus}
           sendMessage={sendMessage} 
+          clearMessages={clearMessages}
           createChatRoom={createChatRoom} />
         :<SignIn
           me={me}

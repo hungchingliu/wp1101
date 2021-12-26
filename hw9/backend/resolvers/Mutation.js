@@ -1,4 +1,4 @@
-import {checkUser, newUser, makeName, checkChatBox, newChatBox, newMessage} from './utility'
+import {checkUser, newUser, makeName, checkChatBox, newChatBox, newMessage, clearMessage} from './utility'
 
 const Mutation = {
     async createChatBox(parent, {name1, name2}, {db, pubsub}, info) {
@@ -29,11 +29,23 @@ const Mutation = {
             chatBoxName,
             {
               chatBoxMessages: {
+                  mutation: 'CREATED',
                   message: message
               }
             }
         )
         return message
+    },
+    async clearMessage(parent, {chatBoxName}, {db, pubsub}, info){
+        await clearMessage(db, chatBoxName)
+        pubsub.publish(
+            chatBoxName, {
+                chatBoxMessages: {
+                    mutation: 'CLEARED'
+                }
+            }
+        )
+        return true
     }
 
 }

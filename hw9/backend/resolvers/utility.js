@@ -53,11 +53,21 @@ const newMessage = async (db, chatBoxName, sender, body) => {
     
 }
 
+const clearMessage = async (db, chatBoxName) => {
+    if(!chatBoxName)
+        throw new Error("Missing chatbox name for clear Message")
+    const ret = await db.ChatBox.updateOne(
+            {name: chatBoxName},
+            {messages:[]}).exec()
+    return 
+     
+}
 export {
     checkUser,
     newUser,
     makeName,
     checkChatBox,
     newChatBox,
-    newMessage
+    newMessage,
+    clearMessage
 }

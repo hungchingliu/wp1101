@@ -1,13 +1,13 @@
 import Message from './Message'
 import Title from './Title'
-import { Button, Input, Tabs, Tag } from 'antd'
+import { Button, Input, Tabs, Row, Col} from 'antd'
 import ChatRoomModal from './ChatRoomModal'
 import ChatBox from './ChatBox'
 
 const { TabPane } = Tabs
 
 
-const ChatRoom = ({me, messages, 
+const ChatRoom = ({me,
   body, setBody, 
   newChatUser, setNewChatUser,
   activeKey, setActiveKey,
@@ -58,9 +58,6 @@ const ChatRoom = ({me, messages,
     <>
       <Title>
         <h1>{me}'s Chat</h1>
-        <Button type="primary" danger onClick={clearMessages}>
-          Clear
-        </Button>
       </Title>
       <Message>
         <ChatRoomModal visible={showModal}
@@ -83,23 +80,32 @@ const ChatRoom = ({me, messages,
         ))}
         </Tabs>
       </Message>
-      <Input.Search
-        value={body}
-        onChange={(e) => setBody(e.target.value)}
-        enterButton="Send"
-        placeholder="Type a message here..."
-        onSearch={(msg) => {
-          if(!msg){
-            displayStatus({
-              type: 'error',
-              msg: 'Please enter a username and a message body.'
-            })
-            return
-          }
-          sendMessage(msg)
-          setBody('')
-        }}
-      ></Input.Search>
+      <Row>
+        <Col span={22}>
+          <Input.Search
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            enterButton="Send"
+            placeholder="Type a message here..."
+            onSearch={(msg) => {
+              if(!msg){
+                displayStatus({
+                  type: 'error',
+                  msg: 'Please enter a username and a message body.'
+                })
+                return
+              }
+              sendMessage(msg)
+              setBody('')
+            }}
+          ></Input.Search>
+        </Col>
+        <Col span={2}>
+          <Button type="primary" danger onClick={clearMessages}>
+            Clear
+          </Button>
+        </Col>
+      </Row>
     </>
   )}
 

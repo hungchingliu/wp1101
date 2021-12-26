@@ -5,6 +5,7 @@ export const CHATBOX_QUERY = gql`
         $chatBoxName: String!
     ){
         chatBox(chatBoxName: $chatBoxName){
+            name
             messages{
                 sender{
                     name

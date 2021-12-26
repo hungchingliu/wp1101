@@ -4,7 +4,8 @@ export const CHATBOXMESSAGES_SUBSCRIPTION = gql`
     subscription chatBoxMessages(
         $chatBoxName: String!
     ){
-    chatBoxMessages(chatBoxName: $chatBoxName){  
+    chatBoxMessages(chatBoxName: $chatBoxName){
+            mutation  
             message{    
                 sender{
                     name

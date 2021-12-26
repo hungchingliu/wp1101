@@ -4,13 +4,14 @@ type Query {
 
 type Mutation {
     createChatBox(name1: String, name2: String): ChatBox!
-    createMessage(chatBoxName: String, sender: String, body: String): Message!
+    createMessage(chatBoxName: String, sender: String, body: String, clear: Boolean): Message!
+    clearMessage(chatBoxName: String): Boolean!
 }
 
 type ChatBox {
     id: ID!
     name: String!
-    messages: [Message!]
+    messages: [Message]
 }
 
 type Message {
@@ -28,6 +29,12 @@ type Subscription {
     chatBoxMessages(chatBoxName:String!): ChatBoxSubscriptionPayload
 }
 
+enum MutationType {
+    CREATED
+    CLEARED
+}
+
 type ChatBoxSubscriptionPayload{
-    message: Message!
+    mutation: MutationType!
+    message: Message
 }

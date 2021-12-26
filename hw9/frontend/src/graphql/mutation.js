@@ -30,12 +30,17 @@ export const CREATE_CHATBOX_MUTATION = gql`
             name2: $name2
         ){
             name
-            messages{
-                sender{
-                    name
-                }
-                body
-            }
         }
     }
+`;
+
+export const CLEAR_MESSAGE_MUTATION = gql`
+    mutation clearMessage(
+        $chatBoxName: String!
+    ){
+        clearMessage(
+            chatBoxName: $chatBoxName
+        )
+    }
+  
 `;
