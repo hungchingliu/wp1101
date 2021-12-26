@@ -1,22 +1,20 @@
 import Message from './Message'
 import Title from './Title'
 import { Button, Input, Tabs, Tag } from 'antd'
-import { useState } from 'react'
+import ChatRoomModal from './ChatRoomModal'
+import ChatBox from './ChatBox'
 
-const { Tabpane } = Tabs
 const { TabPane } = Tabs
 
 
-const initialTabState = {
-  activeKey: null,
-  panes: [],
-}
-
-const ChatRoom = ({me, messages, body, setBody, displayStatus, sendMessage, clearMessages}) => {
+const ChatRoom = ({me, messages, 
+  body, setBody, 
+  newChatUser, setNewChatUser,
+  activeKey, setActiveKey,
+  panes, setPanes,
+  showModal, setShowModal,
+  displayStatus, sendMessage, clearMessages, createChatRoom}) => {
   
-  const [activeKey, setActiveKey] = useState()
-  const [panes, setPanes] = useState([])
-  const [newTabIndex, setNewTabeIndex] = useState(0)
   
   const onChange = activeKey => {
     setActiveKey(activeKey)
@@ -32,14 +30,9 @@ const ChatRoom = ({me, messages, body, setBody, displayStatus, sendMessage, clea
   };
 
   const add = () => {
-    setNewTabeIndex(newTabIndex + 1)
-    const activeKey = `newTab${newTabIndex}`;
-    const newPanes = [...panes];
-    newPanes.push({ title: 'New Tab', content: 'Content of new Tab', key: activeKey });
-    setPanes(newPanes)
-    setActiveKey(activeKey)
+    setShowModal(true)
   };
-
+  
   const remove = targetKey => {
     
     let newActiveKey = activeKey;
@@ -70,17 +63,24 @@ const ChatRoom = ({me, messages, body, setBody, displayStatus, sendMessage, clea
         </Button>
       </Title>
       <Message>
+        <ChatRoomModal visible={showModal}
+         createChatRoom={createChatRoom}
+         hideModal={() => {setShowModal(false)}}
+         newChatUser={newChatUser}
+         setNewChatUser={setNewChatUser} />
         <Tabs
           type="editable-card"
           onChange={onChange}
           activeKey={activeKey}
           onEdit={onEdit}
         >
-          {panes.map(pane => (
-            <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
-              {pane.content}
-            </TabPane>
-          ))}
+        {panes.map(pane => (
+          <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
+            {
+              <ChatBox pane={pane} me={me} chatBoxName={pane.key} />
+              }
+          </TabPane>
+        ))}
         </Tabs>
       </Message>
       <Input.Search
@@ -96,7 +96,7 @@ const ChatRoom = ({me, messages, body, setBody, displayStatus, sendMessage, clea
             })
             return
           }
-          sendMessage({name: me, body:msg})
+          sendMessage(msg)
           setBody('')
         }}
       ></Input.Search>
@@ -104,11 +104,3 @@ const ChatRoom = ({me, messages, body, setBody, displayStatus, sendMessage, clea
   )}
 
 export default ChatRoom
-
-/*
-messages.map(({name, body}, i) => (
-            <p className="App-message" key={i}>
-              <Tag color = "blue">{name}</Tag>{body}
-            </p>
-          )
-*/

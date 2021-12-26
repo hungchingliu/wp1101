@@ -1,10 +1,7 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 const MessageSchema = new Schema({
-    name: {
-        type: String,
-        required: [true, 'Name field is required.']
-    },
+    sender: {type: mongoose.Types.ObjectId, ref: 'user'},
     body: {
         type: String,
         required: [true, 'Body field is required.']
