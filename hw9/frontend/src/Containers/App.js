@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import {message} from 'antd'
 import useChatRoom from '../Hooks/useChatRoom'
 import { useEffect, useState } from 'react'
 import ChatRoom from './ChatRoom'
@@ -23,7 +22,7 @@ const LOCALSTORAGE_KEY = "save-me"
 
 function App() {
   const savedMe = localStorage.getItem(LOCALSTORAGE_KEY)
-  const { status, setStatus } = useChatRoom()
+  const { status, setStatus, displayStatus } = useChatRoom()
   const [me, setMe] = useState(savedMe || '')
   const [body, setBody] = useState('') 
   const [signIn, setSignedIn] = useState(false)
@@ -34,26 +33,7 @@ function App() {
   const [createChatBox] = useMutation(CREATE_CHATBOX_MUTATION)
   const [createMessage] = useMutation(CREATE_MESSAGE_MUTATION)
   const [clearMessage] = useMutation(CLEAR_MESSAGE_MUTATION)
-  const displayStatus = (payload) => {
-    if (payload.msg){
-      const {type ,msg} = payload
-      const content = {
-        content: msg, duration: 0.5}
-      switch (type) {
-        case 'success':
-          message.success(content)
-          break
-        case 'error':
-          message.error(content)
-          break
-        case 'info':
-          message.success(content)
-          break;
-        default: break;
-
-      }
-    }
-  }
+  
   useEffect( () => {displayStatus(status)}, [status])
   useEffect( () => {
     if (signIn) {

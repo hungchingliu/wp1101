@@ -1,6 +1,6 @@
 import Message from './Message'
 import Title from './Title'
-import { Button, Input, Tabs, Row, Col} from 'antd'
+import { Button, Input, Tabs, Row, Col, Badge } from 'antd'
 import ChatRoomModal from './ChatRoomModal'
 import ChatBox from './ChatBox'
 
@@ -72,11 +72,22 @@ const ChatRoom = ({me,
           onEdit={onEdit}
         >
         {panes.map(pane => (
-          <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
+          
+          <TabPane 
+            tab={
+              <>
+              <Badge count={0} size="small"></Badge>
+                <span> {pane.title}</span>
+                </>
+            } 
+            key={pane.key} closable={pane.closable}>
             {
+              
               <ChatBox pane={pane} me={me} chatBoxName={pane.key} />
+              
               }
           </TabPane>
+          
         ))}
         </Tabs>
       </Message>
