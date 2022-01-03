@@ -19,12 +19,9 @@ const ChatBox = ({me, chatBoxName, activeKey, boxKey, panes, setPanes, focused})
                     }
                     else {
                         setUnseenMessages(prev => [...prev, newMessage])
-                        var pane = panes.find(pane => {return pane.key === boxKey})
-                        pane.unseen = pane.unseen + 1
-                        const newPanes = panes.filter(pane => {
-                            return pane.key !== boxKey
-                        })
-                        newPanes.push(pane)
+                        var id = panes.findIndex(pane => {return pane.key === boxKey})
+                        const newPanes = JSON.parse(JSON.stringify(panes))
+                        newPanes[id].unseen += 1
                         setPanes(newPanes)
                         
                     }
@@ -49,20 +46,18 @@ const ChatBox = ({me, chatBoxName, activeKey, boxKey, panes, setPanes, focused})
 
     useEffect( () => {
         if(boxKey === activeKey){
-            var pane = panes.find(pane => {return pane.key === boxKey})
-            pane.unseen = 0
-            const newPanes = panes.filter(pane => {
-                return pane.key !== boxKey
-            })
-            newPanes.push(pane)
+            var id = panes.findIndex(pane => {return pane.key === boxKey})
+            const newPanes = JSON.parse(JSON.stringify(panes))
+            newPanes[id].unseen = 0
             setPanes(newPanes)
+            
         }
 
     }, [activeKey])
 
     useEffect( () => {
         if(focused === true){
-            if(boxKey === activeKey && messages.length && unseenMessages.length){
+            if(boxKey === activeKey){
 
                 setMessages([...messages, ...unseenMessages])
                 setUnseenMessages([])
@@ -70,7 +65,7 @@ const ChatBox = ({me, chatBoxName, activeKey, boxKey, panes, setPanes, focused})
             }
             
         }
-    }, [focused])
+    }, [focused, activeKey])
 
     return (
         <>
