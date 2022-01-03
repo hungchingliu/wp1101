@@ -58,7 +58,7 @@ function App() {
       const activeKey = name;
       const newPanes = [...panes];
 
-      newPanes.push({ title: newChatUser, key: activeKey });
+      newPanes.push({ title: newChatUser, key: activeKey, unseen: 0});
       setStatus({type: "success", msg: "ChatBox created"})
       setPanes(newPanes)
       setActiveKey(activeKey)

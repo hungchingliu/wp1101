@@ -3,7 +3,7 @@ import Title from './Title'
 import { Button, Input, Tabs, Row, Col, Badge } from 'antd'
 import ChatRoomModal from './ChatRoomModal'
 import ChatBox from './ChatBox'
-
+import { useState } from 'react'
 const { TabPane } = Tabs
 
 
@@ -15,7 +15,8 @@ const ChatRoom = ({me,
   showModal, setShowModal,
   displayStatus, sendMessage, clearMessages, createChatRoom}) => {
   
-  
+  const [focused, setFocused] = useState(false)
+
   const onChange = activeKey => {
     setActiveKey(activeKey)
   };
@@ -54,6 +55,13 @@ const ChatRoom = ({me,
     setActiveKey(newActiveKey)
   };
 
+  const onFocus = () => {
+    setFocused(true)
+  }
+
+  const onBlur = () => {
+    setFocused(false)
+  }
   return (
     <>
       <Title>
@@ -76,14 +84,14 @@ const ChatRoom = ({me,
           <TabPane 
             tab={
               <>
-              <Badge count={0} size="small"></Badge>
+              <Badge count={pane.unseen} size="small"></Badge>
                 <span> {pane.title}</span>
                 </>
             } 
             key={pane.key} closable={pane.closable}>
             {
               
-              <ChatBox pane={pane} me={me} chatBoxName={pane.key} />
+              <ChatBox pane={pane} me={me} chatBoxName={pane.key} activeKey={activeKey} boxKey={pane.key} panes={panes} setPanes={setPanes} focused={focused} />
               
               }
           </TabPane>
@@ -98,6 +106,8 @@ const ChatRoom = ({me,
             onChange={(e) => setBody(e.target.value)}
             enterButton="Send"
             placeholder="Type a message here..."
+            onFocus={onFocus}
+            onBlur={onBlur}
             onSearch={(msg) => {
               if(!msg){
                 displayStatus({
