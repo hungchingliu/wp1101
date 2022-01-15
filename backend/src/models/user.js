@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
         lat: Number,
         lng: Number,
         songID: String,
+        songName: String,
         imageURL: String,
         lastModifiedDate: Date
     }  

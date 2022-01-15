@@ -12,7 +12,7 @@ const users = [
     imageURL:""}
 ]
 */
-const List = ({users, childClicked, setChildClicked}) => {
+const List = ({users, childClicked, setChildClicked, userInfo}) => {
     const classes = useStyles()
     const [elRefs, setElRefs] = useState([])
     useEffect(()=> {
@@ -23,12 +23,15 @@ const List = ({users, childClicked, setChildClicked}) => {
         <div className={classes.container}>
             
             <Grid container spacing={3} className={classes.list}>
-                {users?.map((user, i) => (
+                {users?.map((user, i) => {
+                    if(user.id === userInfo.userId)
+                        return <></>
+                    return(
                     <Grid item key={i} xs={12} ref={elRefs[i]}>
                         <User user={user} selected={childClicked == i} refProp={elRefs[i]} i = {i} setChildClicked={setChildClicked}/>
 
                     </Grid>
-                ))}
+                )})}
             </Grid>
         </div>
        

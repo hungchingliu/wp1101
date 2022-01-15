@@ -37,10 +37,10 @@ const Map = ({coords, setCoords, bounds, setBounds, users, userLocation, setChil
                 bootstrapURLKeys={{key: process.env.REACT_APP_GOOGLE_API_KEY}}
                 defaultCenter={Taipei}
                 center={coords}
-                defaultZoom={16}
+                defaultZoom={17}
                 margin={[50, 50, 50, 50]}
                 yesIWantToUseGoogleMapApiInternals={true}
-                options={{restriction: {latLngBounds: Taipei_Bounds}, styles: mapStyles}}
+                options={{disableDefaultUI: true, restriction: {latLngBounds: Taipei_Bounds}, styles: mapStyles}}
                 onGoogleApiLoaded={({ map, maps }) => handleStreetView(map, maps)}
                 onChange={(e) => {
                      setCoords({lat:e.center.lat, lng: e.center.lng})

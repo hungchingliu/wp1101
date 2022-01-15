@@ -66,11 +66,7 @@ function App() {
   }
   
   
-  useEffect( () => {
-    if(!accessToken){
-      setIsLogin(false)
-    }
-  }, [accessToken])
+  
 
   useEffect( () => {
     if(isLogin && currentPlaying.is_playing){
@@ -81,8 +77,9 @@ function App() {
             name: userInfo.username,
             imageURL: userInfo.image,
             lng: userLocation?userLocation.lng: coords.lng,
-            lat: userLocation?userLocation.lat: coords.at,
-            songID: currentPlaying.id
+            lat: userLocation?userLocation.lat: coords.lat,
+            songID: currentPlaying.id,
+            songName: currentPlaying.name
           }
         }
       })
@@ -101,10 +98,10 @@ function App() {
     <CssBaseline/>
     <Header currentPlaying={currentPlaying} isLogin={isLogin} userInfo={userInfo}/>
     <Grid container spacing={3} style={{ width: '100%'}}>
-      <Grid item xs={12} md={3}>
-        <List users={data?.users} childClicked={childClicked} setChildClicked={setChildClicked}/>
+      <Grid item xs={12} md={4}>
+        <List users={data?.users} childClicked={childClicked} setChildClicked={setChildClicked} userInfo={userInfo}/>
       </Grid>
-      <Grid item xs={12} md={9}>
+      <Grid item xs={12} md={8}>
         <Map 
          coords={coords}
          setCoords={setCoords}

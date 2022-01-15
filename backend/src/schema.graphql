@@ -9,6 +9,7 @@ type User{
     lat: Float!
     lng: Float!
     songID: String!
+    songName: String!
     imageURL: String!
 }
 
@@ -31,5 +32,6 @@ input CreateUserInput{
     lat: Float!
     lng: Float!
     songID: String!
+    songName: String!
     imageURL: String!
 }

@@ -31,6 +31,7 @@ import { useState, useEffect } from "react";
         code
       })
         .then(res => {
+          console.log(res)
           token = res.data.accessToken
           setAccessToken(res.data.accessToken);
           setRefreshToken(res.data.refreshToken);
