@@ -1,7 +1,6 @@
 import { GraphQLServer, PubSub } from  "graphql-yoga";
 import Query from "./resolvers/Query"; 
 import Mutation from "./resolvers/Mutation"
-import Subscription from "./resolvers/Subscription"
 import SpotifyWebApi from "spotify-web-api-node"
 import cors from "cors"
 import bodyParser from "body-parser";
@@ -15,8 +14,7 @@ const server = new GraphQLServer({
     typeDefs: "./src/schema.graphql",
     resolvers: {
         Query,
-        Mutation,
-        Subscription
+        Mutation
     },
     context:{
         userModel,
