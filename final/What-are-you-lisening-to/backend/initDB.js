@@ -341,15 +341,16 @@ const initDB = () => {
     RandomName.map((name) => {
         var date = new Date()
         var song = Top100.items[getRandomInt(0, Top100.items.length)]
+        var url = song.track.href.split("/")
         const user = userModel({
             id: makeid(11),
             name: name, 
             lat: getRandomArbitrary(TaipeiBounds.south, TaipeiBounds.north),
             lng: getRandomArbitrary(TaipeiBounds.east, TaipeiBounds.west),
-            songID: song.track.href.split("/").at(-1),
+            songID: url[url.length - 1],
             songName: song.track.name,
             imageURL: "",
-            lastModifiedDate: date.setDate(date.getDate() + 5)
+            lastModifiedDate: date.setDate(date.getDate() + 5) //set expired time here
         })
         user.save()
     })

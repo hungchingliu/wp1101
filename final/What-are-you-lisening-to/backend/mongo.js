@@ -7,7 +7,11 @@ async function connect() {
     mongoose.connect(process.env.MONGO_URL)
     const db = mongoose.connection
     db.once('open', async() => {
-        //await initDB()
+        /*
+        uncomment the following code to add fake users expired in 5 days
+        you can set the expired time at initDB.js line:353
+        */
+        //await initDB() 
         console.log('MongoDB connected!')
         
     })
