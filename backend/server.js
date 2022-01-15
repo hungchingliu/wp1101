@@ -1,34 +1,41 @@
-import { GraphQLServer, PubSub } from  "graphql-yoga";
-import Query from "./resolvers/Query"; 
-import Mutation from "./resolvers/Mutation"
+import { ApolloServer } from  "apollo-server-express"
+import {importSchema} from "graphql-import"
+import Query from "./resolvers/Query.js"
+import Mutation from "./resolvers/Mutation.js"
 import SpotifyWebApi from "spotify-web-api-node"
 import cors from "cors"
 import bodyParser from "body-parser";
-import userModel from "./models/user"
+import userModel from "./models/user.js"
 import "dotenv-defaults/config.js"
+import mongo from "./mongo.js"
+import http from "http"
+import path from "path"
+import { dirname } from "path"
+import { fileURLToPath, pathToFileURL} from "url"
+import express from "express"
+const typeDefs = importSchema("./backend/schema.graphql");
+const REDIRECT_URI = process.env.REDIRECT_URI || "http://localhost:3000"
+const __dirname = dirname(fileURLToPath(require('url').pathToFileURL(__filename).toString()))
 
-let REDIRECT_URI = process.env.REDIRECT_URI || "http://localhost:3000"
-
-const pubSub = new PubSub();
-const server = new GraphQLServer({
-    typeDefs: "./src/schema.graphql",
+const server = new ApolloServer({
+    typeDefs,
     resolvers: {
         Query,
-        Mutation
+        Mutation,
     },
     context:{
-        userModel,
-        pubSub
+        userModel
     }
 })
+const app = express()
+app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
 
-server.express.use(cors())
-server.express.use(bodyParser.json())
-server.express.use(bodyParser.urlencoded({extended: true}))
 
-server.express.post("/auth", (req, res) => {
+app.post("/auth", (req, res) => {
+    console.log("-----auth-----")
     const code = req.body.code
-    console.log(code)
     const spotifyApi = new SpotifyWebApi({
         clientId: process.env.SPOTIFY_CLIENT_ID,
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
@@ -64,7 +71,8 @@ server.express.post("/auth", (req, res) => {
     
 })
 
-server.express.post('/refresh', (req, res) => {
+app.post('/refresh', (req, res) => {
+    console.log("-----refresh-----")
     const refreshToken = req.body.refreshToken;
   
     const spotifyApi = new SpotifyWebApi({
@@ -88,7 +96,8 @@ server.express.post('/refresh', (req, res) => {
       })
   })
 
-  server.express.post('/current-playing', async(req, res) => {
+app.post('/current-playing', async(req, res) => {
+    console.log("-----currentplaying-----")
     try{
       const spotifyApi = new SpotifyWebApi({
         clientId: process.env.SPOTIFY_CLIENT_ID
@@ -104,6 +113,21 @@ server.express.post('/refresh', (req, res) => {
     }
   })
 
+app.use(express.static(path.join(__dirname, "build")))
+app.get("/*", function (req, res){
+  res.sendFile(path.join(__dirname, "build", "index.html"))
+})
 
+async function startServer() {
+  await server.start()
+  server.applyMiddleware({app})
+}
+startServer()
+const httpServer = http.createServer(app)
 
-export default server;
+mongo.connect();
+const port = process.env.PORT || 80;
+
+httpServer.listen({ port }, () => {
+      console.log(`The server is up on port ${port}${server.graphqlPath}!`);
+  })

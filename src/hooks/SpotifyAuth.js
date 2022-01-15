@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-
-
+const auth_url = new URL("/auth", window.location.href)
+const currentPlaying_url = new URL("/current-playing", window.location.href)
+const refresh_url = new URL("/refresh", window.location.href)
   const useAuth = (code) => {
     const [userInfo, setUserInfo] = useState({
         userId: '',
@@ -27,7 +28,7 @@ import { useState, useEffect } from "react";
     useEffect(() => {
       if(!code) return
       var token
-      axios.post(`${process.env.REACT_APP_SERVER_URL}/auth`, {
+      axios.post(auth_url, {
         code
       })
         .then(res => {
@@ -47,7 +48,7 @@ import { useState, useEffect } from "react";
           if(token){
             setIsLogin(true)
 
-            axios.post(`${process.env.REACT_APP_SERVER_URL}/current-playing`, {
+            axios.post(currentPlaying_url, {
               accessToken: token
             }).then(res => {
               console.log(res)
@@ -65,7 +66,7 @@ import { useState, useEffect } from "react";
             })
 
             const intervallCall = setInterval(() => {
-              axios.post(`${process.env.REACT_APP_SERVER_URL}/current-playing`, {
+              axios.post(currentPlaying_url, {
                 accessToken: token
               }).then(res => {
                 console.log(res)
@@ -98,7 +99,7 @@ import { useState, useEffect } from "react";
       if (!refreshToken || !expiresIn) return;
 
       const intervalCall = setInterval(() => {
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/refresh`, {
+        axios.post(refresh_url, {
           refreshToken
         })
           .then(res => {

@@ -9,9 +9,9 @@ import {
   HttpLink
 } from "@apollo/client";
 
-
+const url = new URL("/graphql", window.location.href)
 const httpLink = new HttpLink({
-  uri: process.env.REACT_APP_SERVER_URL
+  uri: url.href
 });
 
 

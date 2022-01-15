@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv-defaults';
 import "dotenv-defaults/config.js"
-import initDB from "./initDB"
+import initDB from "./initDB.js"
 async function connect() {
     dotenv.config()
     mongoose.connect(process.env.MONGO_URL)
