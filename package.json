@@ -1,0 +1,12 @@
+{
+  "name": "What-are-you-lisening-to",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:hungchingliu/What-are-you-lisening-to.git",
+  "author": "hungchingliu <robbin870204@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "cd frontend && yarn start",
+    "server": "cd backend && yarn server"
+   }
+}
