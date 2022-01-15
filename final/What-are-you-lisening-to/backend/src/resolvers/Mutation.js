@@ -5,7 +5,8 @@ const Mutation = {
             if(user){
                 const updatedUser = userModel.findOneAndUpdate({id: user.id}, 
                     {$set: {
-                        songID: input.songID
+                        songID: input.songID,
+                        songName: input.songName
                         },
                     $currentDate:{
                         lastModifiedDate: true
@@ -36,7 +37,8 @@ const Mutation = {
             if(user){
                 const updatedUser = userModel.findOneAndUpdate({id: user.id}, 
                     {$set: {
-                        songID: input.songID
+                        songID: input.songID,
+                        songName: input.songName
                         },
                     $currentDate:{
                         lastModifiedDate: true

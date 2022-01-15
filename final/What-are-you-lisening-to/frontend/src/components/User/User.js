@@ -11,22 +11,25 @@ const User = ({ user, selected, refProp, i, setChildClicked }) => {
                 console.log("clicked")
                 setChildClicked(i)}}>
             <CardHeader
-                avatar={
-                    <Avatar src={user.imageURL}/>
+                avatar={user.imageURL?
+                    <Avatar src={user.imageURL}/>:
+                    <Avatar>{user.name[0]}</Avatar>
                 }
                 title={<Typography style={{color: "white"}} variant="h6">{user.name}</Typography>}
             />
            
             
             <CardContent>
-            <iframe src={`https://open.spotify.com/embed/track/${user.songID}`}
+            {selected?<iframe src={`https://open.spotify.com/embed/track/${user.songID}`}
                 width="100%" 
                 height="80"
                 title="spotify iframe" 
                 frameBorder="0"
                 border-radius="5em" 
                 allowtransparency="true" 
-                allow="encrypted-media"/>
+                allow="encrypted-media"/>:<>
+                    <Typography variant="subtitle1" style={{color:"white"}}>{user.songName}</Typography>
+                </>}
             </CardContent>
             </CardActionArea>
         </Card>
