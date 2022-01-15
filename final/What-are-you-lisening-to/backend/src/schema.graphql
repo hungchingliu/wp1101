@@ -20,12 +20,6 @@ type Mutation{
     
 }
 
-type Subscription {
-    userCreated: User!
-    userUpdated: User!
-    userDeleted: String!
-}
-
 input CreateUserInput{
     id: String!
     name: String!

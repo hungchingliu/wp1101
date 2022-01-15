@@ -14,17 +14,11 @@ const Mutation = {
                     },{
                         returnDocument: "after"
                     })
-                pubSub.publish("USER_UPDATED", {
-                    userUpdated: updatedUser
-                })
                 return updatedUser
             }
             else{
                 const newUser = userModel({...input, lastModifiedDate: Date.now()})
                 await newUser.save()
-                pubSub.publish("USER_CREATED", {
-                    userCreated: newUser
-                })
                 return newUser
             }
         } catch (e){
@@ -46,17 +40,13 @@ const Mutation = {
                     },{
                         returnDocument: "after"
                     })
-                pubSub.publish("USER_UPDATED", {
-                    userUpdated: updatedUser
-                })
+                
                 return updatedUser
             }
             else{
                 const newUser = userModel({...input, lastModifiedDate: Date.now()})
                 await newUser.save()
-                pubSub.publish("USER_CREATED", {
-                    userCreated: newUser
-                })
+                
                 return newUser
             }
         } catch (e){
@@ -66,9 +56,7 @@ const Mutation = {
     deleteUser: async(parent, {id}, {userModel, pubSub}) => {
         try {
             await userModel.deleteOne({id:id})
-            pubSub.publish("USER_DELETED", {
-                userDeleted: id
-            })
+            
         } catch (e){
             console.log(e)
         }
