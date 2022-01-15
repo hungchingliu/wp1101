@@ -8,7 +8,7 @@ import bodyParser from "body-parser";
 import userModel from "./models/user"
 import "dotenv-defaults/config.js"
 
-let REDIRECT_URI = process.env.REDIRECT_URI || "http://localhost:3000"
+let REDIRECT_URI = process.env.REDIRECT_URI | "http://localhost:3000"
 
 const pubSub = new PubSub();
 const server = new GraphQLServer({
