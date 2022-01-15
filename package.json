@@ -51,7 +51,8 @@
   "scripts": {
     "start": "node lib/server.js",
     "build": " babel -d ./lib ./backend -s && react-scripts build && mv build lib",
-    "start_react": "react-scripts start"
+    "start_react": "react-scripts start",
+    "clean": "rm -rf lib"
   },
   "eslintConfig": {
     "extends": [
