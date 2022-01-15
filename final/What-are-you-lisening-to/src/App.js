@@ -22,15 +22,23 @@ var options = {
   maximumAge: 0
 };
 
+function getCoordinates() {
+  return new Promise(function(resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
+}
+
+
+
 function App() {
   
   
 
   const {userInfo, currentPlaying, isLogin, setIsLogin, accessToken} = useAuth(code)
   
-  const [coords, setCoords] = useState(Taipei)
+  const [coords, setCoords] = useState({})
   const [bounds, setBounds] = useState(TAIPEI_RESTRICTION)
-  const [userLocation, setUserLocation] = useState(Taipei)
+  const [userLocation, setUserLocation] = useState({})
 
   const { data } = useQuery(GET_USERS_QUERY, {variables: 
     {
@@ -45,27 +53,25 @@ function App() {
   const [createUser] = useMutation(CREATE_USER_MUTATON)
 
   useEffect( () => {
-    navigator.geolocation.getCurrentPosition(getPosition, getPostionErr, options)
+      getCoordinates().then((position) => {
+        const userCenter = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+      }
+        console.log("locate user successfully at")
+        console.log(userCenter)
+        setUserLocation(userCenter)
+        setCoords(userCenter)
+      }).catch((e) => {
+        console.log("locate user failure" + e)
+        setUserLocation(Taipei)
+        setCoords(Taipei)
+      })
   }, [])
 
-  function getPosition(position){
+  
+  
 
-    const userCenter = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-    }
-    console.log("locate user successfully at")
-    console.log(userCenter)
-
-    setCoords(userCenter)
-    setUserLocation(userCenter)
-  }
-  
-  function getPostionErr(){
-    console.log("locate user failure")
-  }
-  
-  
   
 
   useEffect( () => {
@@ -102,7 +108,7 @@ function App() {
         <List users={data?.users} childClicked={childClicked} setChildClicked={setChildClicked} userInfo={userInfo}/>
       </Grid>
       <Grid item xs={12} md={8}>
-        <Map 
+        {userLocation?<Map 
          coords={coords}
          setCoords={setCoords}
          bounds={bounds}
@@ -111,7 +117,7 @@ function App() {
          users={data?.users}
          childClicked={childClicked}
          setChildClicked={setChildClicked}
-        />
+        />:<></>}
       </Grid>
     </Grid>
     </>

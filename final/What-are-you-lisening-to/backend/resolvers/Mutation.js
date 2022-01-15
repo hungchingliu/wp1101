@@ -3,6 +3,7 @@ const Mutation = {
         try{
             const user = await userModel.findOne({id: input.id})
             if(user){
+                console.log("---update user----")
                 const updatedUser = userModel.findOneAndUpdate({id: user.id}, 
                     {$set: {
                         songID: input.songID,
@@ -17,6 +18,7 @@ const Mutation = {
                 return updatedUser
             }
             else{
+                console.log("---new user----")
                 const newUser = userModel({...input, lastModifiedDate: Date.now()})
                 await newUser.save()
                 return newUser
@@ -29,6 +31,7 @@ const Mutation = {
         try{
             const user = await userModel.findOne({id: input.id})
             if(user){
+                console.log("---update user----")
                 const updatedUser = userModel.findOneAndUpdate({id: user.id}, 
                     {$set: {
                         songID: input.songID,
@@ -44,9 +47,9 @@ const Mutation = {
                 return updatedUser
             }
             else{
+                console.log("---new user----")
                 const newUser = userModel({...input, lastModifiedDate: Date.now()})
                 await newUser.save()
-                
                 return newUser
             }
         } catch (e){
