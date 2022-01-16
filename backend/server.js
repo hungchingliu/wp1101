@@ -54,18 +54,25 @@ app.post("/auth", (req, res) => {
         return spotifyApi.getMe();
     })
     .then(data => {
-        userJSON['userId'] = data.body['id'];
-        userJSON['name'] = data.body['display_name'];
-        userJSON['email'] = data.body['email'];
+        if(data.body){
+          userJSON['userId'] = data.body['id'];
+          userJSON['name'] = data.body['display_name'];
+          userJSON['email'] = data.body['email'];
 
-        const image = data.body.images[0].url;
-        userJSON['image'] = image;
-        userJSON['product'] = data.body['product'];
+          let image=""
+          if(data.body.images)
+            if(data.body.images[0])
+              image = data.body.images[0].url;
+        
+          userJSON['image'] = image;
+          userJSON['product'] = data.body['product'];
+        }
         console.log(userJSON)
         res.status(201).send(userJSON);
     })
     .catch(err => {
         console.log(err.WebapiError)
+        console.log(err)
         res.status(500).send(err);
       })
     
