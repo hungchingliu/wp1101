@@ -83,7 +83,7 @@ const refresh_url = new URL("/refresh", window.location.href)
                 console.log(err)
               })
   
-            }, 60 * 1000)
+            }, 20 * 1000)
   
             return () => clearInterval(intervallCall)
           }
