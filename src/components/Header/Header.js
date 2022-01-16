@@ -27,16 +27,7 @@ const MiniContainer = styled.div`
 `;
 
 const scopes = [
-    'streaming',
-    'user-read-recently-played',
-    'user-read-playback-state',
-    'user-top-read',
-    'user-modify-playback-state',
-    'user-follow-read',
-    'user-library-read',
-    'user-library-modify',
-    'user-read-email',
-    'user-read-private'
+    'user-read-currently-playing'
   ];
 
 const url = process.env.REACT_APP_CLIENT_URL
