@@ -27,6 +27,7 @@ const MiniContainer = styled.div`
 `;
 
 const scopes = [
+    'user-read-private',
     'user-read-email',
     'user-read-currently-playing'
   ];
