@@ -65,6 +65,7 @@ app.post("/auth", (req, res) => {
         res.status(201).send(userJSON);
     })
     .catch(err => {
+        console.log(err)
         res.status(500).send(err);
       })
     
