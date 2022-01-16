@@ -65,7 +65,7 @@ app.post("/auth", (req, res) => {
         res.status(201).send(userJSON);
     })
     .catch(err => {
-        console.log(err)
+        console.log(err.WebapiError)
         res.status(500).send(err);
       })
     
