@@ -7,9 +7,9 @@ https://www.youtube.com/watch?v=qIzOgjTLcec
 
 這個 project 簡單來說可以看到附近的人在聽什麼，同時可以登入 spotify 帳號來分享自己正在聽什麼，可以參考以下 demo 影片 和 demo 網站。
 
-Demo Video Link: what-are-you-listening-to.herokuapp.com
+Demo Video Link: https://youtu.be/YoKiFccb97M
 
-Deploy Link:?
+Deploy Link: what-are-you-listening-to.herokuapp.com
 
 
 ## 安裝與使用
@@ -32,7 +32,7 @@ Start the server. Default port number is 80.
 start react frontend
 
 ### add fake user
-see backend/mongo.js
+see `backend/mongo.js`
 
 ## 功能
 
@@ -52,15 +52,15 @@ see backend/mongo.js
 ## 專題製作心得
 ---劉鴻慶---
 
-期末 project 想練習串串看第三方 api，最後選擇的是 google map api 和 spotify api。一開始夢很大本來想串 Google street view，就會有種半 AR 的體驗，但是研究了兩三天沒有結果，期末又快 due 的就放棄了。最後快做完的時候才想到這個服務通常是給手機使用，但時間關係沒做 reponsive，有點可惜。 Deploy 時後端的code 因為使用 babel 開發最後 build 的時候出了一點狀況，弄了一整天，真的不要拖到最後才 deploy。
+期末 project 想練習串串看第三方 api，最後選擇的是 google map api 和 spotify api。一開始夢很大本來想串 Google street view，就會有半 AR 的體驗，但是研究了兩三天沒有結果，期末又快 due 的就放棄了，太高估自己的能力了。最後快做完的時候才想到這個服務通常是給手機使用，但時間關係沒做 reponsive web disign，有點可惜。 Deploy 時後端的code 因為使用 babel 開發最後 build 的時候出了一點狀況，弄了一整天，真的不要拖到最後才 deploy。
 
 ## 使用與參考之框架/模組/原始碼
 前端排版有參考這個教學影片：https://www.youtube.com/watch?v=UKdQjQX1Pko&t=507s
 ## 使用之第三方套件、框架、程式碼
-前端: Reactjs, apollo, axios, materail ui, google-map-react, \<spotify iframe widget\>, graphql
+前端: Reactjs, apollo, axios, material ui, google-map-react, \<spotify iframe widget\>, graphql
 
 
-後端: express, mongoose, babel, graphql, spotify-web-api-node
+後端: express, mongoose, babel, graphql, spotify-web-api-node, apollo-server-express
 
 
 資料庫: MongoDB
@@ -72,7 +72,7 @@ R10922047 資工碩一 劉鴻慶 100%
 ## 課程建議
 1. 會想多了解 browser 的運作原理
 2. 會想多了解 server 要如何 scale up，容易發生瓶頸的地方和解決方案
-3. 感覺 hackthon 可以改成作業的形式
+3. 感覺 hackthon 可以改成大作業的形式
 
 
  

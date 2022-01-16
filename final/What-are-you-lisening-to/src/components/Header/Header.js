@@ -94,20 +94,3 @@ const Header = ({currentPlaying, isLogin, userInfo}) => {
 }
 
 export default Header
-
-/*
-<img src={logo} style = {{height: '3rem', width: '3rem'}}/>
-                  <LoginButton variant="contained" onClick={(e) => {window.location.href=AUTH_URL}}>
-                      <a href={AUTH_URL} style={{color: 'white', textDecoration:'none'}}
-                      >
-                          Login Spotify
-                      </a>
-                  </LoginButton></>
-
-<iframe src={"https://open.spotify.com/embed/track/" + currentPlaying.id}
-                  width="100%" 
-                  height="80" 
-                  frameBorder="0" 
-                  allowtransparency="true" 
-                  allow="encrypted-media"/>
-*/

@@ -2,16 +2,7 @@ import { Grid } from "@material-ui/core"
 import User  from "../User/User"
 import useStyles from "./styles"
 import { useState, useEffect, createRef } from "react"
-/*
-const users = [
-    {id:"11100723060",
-    name:"劉鴻慶",
-    lat:25.027256,
-    lng:121.5217518,
-    songID:"5Itl5bD4RARZkJWpKMboiR",
-    imageURL:""}
-]
-*/
+
 const List = ({users, childClicked, setChildClicked, userInfo}) => {
     const classes = useStyles()
     const [elRefs, setElRefs] = useState([])
