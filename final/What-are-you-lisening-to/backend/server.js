@@ -129,5 +129,5 @@ mongo.connect();
 const port = process.env.PORT || 80;
 
 httpServer.listen({ port }, () => {
-      console.log(`The server is up on port ${port}${server.graphqlPath}!`);
+      console.log(`The server is up on port ${port}`);
   })
